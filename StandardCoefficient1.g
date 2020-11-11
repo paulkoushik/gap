@@ -1,3 +1,7 @@
+#Define the partition as lambda  
+#Define the permutation that you want to apply as sigma
+## sigma is a global variable, hence it needs to be defined beforehand
+
 StandardCoefficient1:= function(lambda)
     local syt, rows, cols, a, b, A, B, sm, tt, col, l, k, m; 
         syt:= SYT(lambda);
