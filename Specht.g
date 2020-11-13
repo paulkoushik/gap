@@ -38,6 +38,27 @@ end;
 ###########################################################################################################################
 
 # For any number n, a Young tableau is an arrangement of boxes in a tetris like shape corresponding to a partition of n and each box has a number from 1,..,n.
+# A standard Young tableau is when the numbers 1,2,..,n inside the boxes and they are increasing towards the right on the rows and towards the bottom on columns.
+
+###########################################################################################################################
+
+# A canonical tableau is a standard Young tableau, which has all its rows and columns properly sorted.
+# i.e., assigning the numbers to the boxes first fills out the row 1 and then moves to the second row and so on in an ascending order to the right.
+# To find the canonical tableau for any partition lambda, input lambda in the argument
+
+CanonicalTableau:= function(lambda)
+local t, o, l;
+    t:= [];
+    o:= 0;
+        for l in lambda do
+            Add(t, o + [1..l]);
+            o:= o + l;
+        od;
+    return t;
+end;
+
+###########################################################################################################################
+
 # To find a Young tableau for any partition lambda, input the lambda as an argument in the function
 
 RandomTableau:= function(lambda)
@@ -51,7 +72,6 @@ end;
 
 ###########################################################################################################################
 
-# A standard Young tableau is when the numbers 1,2,..,n inside the boxes and they are increasing towards the right on the rows and towards the bottom on columns.
 # Input a partition lambda in the argument to find out a standard Young tableau of shape lambda
 
 RandomSYT:= function(lambda)
@@ -117,23 +137,6 @@ SYT:= function(lambda)
     od;
 
     return list;
-end;
-
-###########################################################################################################################
-
-# A canonical tableau is a standard Young tableau, which has all its rows and columns properly sorted.
-# i.e., assigning the numbers to the boxes first fills out the row 1 and then moves to the second row and so on in an ascending order to the right.
-# To find the canonical tableau for any partition lambda, input lambda in the argument
-
-CanonicalTableau:= function(lambda)
-local t, o, l;
-    t:= [];
-    o:= 0;
-        for l in lambda do
-            Add(t, o + [1..l]);
-            o:= o + l;
-        od;
-    return t;
 end;
 
 ###########################################################################################################################
