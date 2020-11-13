@@ -142,10 +142,21 @@ end;
 ###########################################################################################################################
 
 # A tabloid is basically the set of all tableaux obtained by applying all permutations of the elements present in the same rows or same columns.
-# To obtain the row tabloid (the elements in the rows are permuted and assigned in the same rows) for any particular tableau, one can input the tableau as a list in the argument.
+
+###########################################################################################################################
+
+# To obtain the row tabloid (the elements present in the rows are permuted and assigned to the same rows) for any particular tableau, one can input the tableau as a list of lists in the argument.
 
 RowTabloid:= function(t)
   return Cartesian(List(t, row -> Arrangements(row, Length(row))));
+end;
+
+###########################################################################################################################
+
+# To obtain the column tabloid (the elements present in the columns are permuted and assigned to the same columns) for any particular tableau, one can input the tableau as a list of lists in the argument.
+
+ColumnTabloid:= function(t)
+    return Cartesian(List(TransposedMat(t), row -> Arrangements(row, Length(row))));
 end;
 
 ###########################################################################################################################
@@ -168,6 +179,23 @@ end;
 
 ###########################################################################################################################
 
+# For a given tableau, one can find the tabloid for a partition lambda. Similarly one can also find the tabloid for corresponding tableau of the conjugate partition sigma.
 
+###########################################################################################################################
 
+# To find the row tabloid of corresponding conjugate tableau, input the tableau as an argument in the function.
+
+TransposedTabloid:= function(t)
+return List(RowTabloid(t), row -> TransposedTableau(row));
+end;
+
+###########################################################################################################################
+
+# To find the column tabloid of corresponding conjugate tableau, input the tableau as an argument in the function.
+
+CTTransposed:= function(t)
+    return List(ColumnTabloid(t), row -> TransposedMat(row));
+end;
+
+###########################################################################################################################
 
