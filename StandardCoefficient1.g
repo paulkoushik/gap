@@ -2,7 +2,7 @@
 #Define the permutation that you want to apply as sigma
 ## sigma is a global variable, hence it needs to be defined beforehand
 
-StandardCoefficient1:= function(lambda)
+StandardCoefficient1:= function(lambda, sigma)
     local syt, rows, cols, a, b, A, B, sm, tt, col, l, k, m; 
         syt:= SYT(lambda);
         rows:= List(syt, x -> WordsTableau(x).rows);
