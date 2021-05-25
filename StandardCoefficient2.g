@@ -1,4 +1,5 @@
-# To work with StandardCoefficient2, one needs to read all the previous files in the gap session mentioned below before reading the StandardCoefficient2.g file
+# To work with StandardCoefficient2, one needs to read 
+# all the previous files in the gap session mentioned below before reading the StandardCoefficient2.g file
 
 #ExpandedList.g
 
