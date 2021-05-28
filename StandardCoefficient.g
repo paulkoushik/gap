@@ -12,7 +12,6 @@ rd:= RowDescent(t);
             for pi in Perms do
                 list:= list + StandardCoefficient(OnTuplesTuples(tt, pi), syt) * SignPerm(pi);
             od;
-        
     fi;
     return list;
 end;
