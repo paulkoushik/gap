@@ -1,5 +1,5 @@
 CoxeterB:= function(n)
-return Centralizer(SymmetricGroup(2*n), PermList(List([1..2*n], i -> 2*n - i + 1)));
+return Centralizer(SymmetricGroup(2*n), PermList(Reversed([1..2*n])));
 end;
 
 OnTuplesTuplesTuples:= function(x, a)

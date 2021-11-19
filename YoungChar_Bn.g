@@ -1,3 +1,6 @@
+##The input of the function should be a Group element of a type B_n group 
+##as a subgroup of S_2n group.
+
 YoungChar_Bn:= function(w)
     local n, list, l, pi;
     
