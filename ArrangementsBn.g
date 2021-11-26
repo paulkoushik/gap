@@ -1,9 +1,9 @@
-#lambda:= [lambda0, lambda1];
+#lambda:= [lambda1, lambda2];
 
-#w0:= List(ExpandedList(lambda0), String);
-#w1:= ExpandedList(lambda1);
+#w0:= List(ExpandedList(lambda1), String);
+#w1:= ExpandedList(lambda2);
 
-#w:= Concatenation(w0, w1, -Reversed(w1), Reversed(w0));
+#w:= Concatenation(w1, w2, -Reversed(w2), Reversed(w1));
 
 ArrangementsBn:= function(w)
 return Orbit(CoxeterB(Length(w)), w, Permuted);
