@@ -2,7 +2,7 @@ BiPartitionWord:= function(w1)
 local lambda, a;
 lambda:= [[],[]];
 
-for a in w1 do
+for a in w1{[1..Length(w1)/2]} do
     if IsInt(a) then 
         a:= AbsInt(a);
 
