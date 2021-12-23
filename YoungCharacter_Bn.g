@@ -38,12 +38,18 @@ YoungCharacter_Bn:= function(w1, w2)
         pi0:= Sortex(ShallowCopy(TransposedMat(w)));
         pi:= Sortex(ShallowCopy(c));
         u1:= pi/pi0;
-        n:= (LargestMovedPoint(u1) + SmallestMovedPoint(u1)-1)/2;
-        list:= (ListPerm(u1){[1..n]} + n) mod (2*n + 1) - n;
-        l:= List(list, AbsInt);
-        pi:= PermList(l); 
 
-        return SignPerm(u1 * pi);
+        if u1 <> () then
+            n:= (LargestMovedPoint(u1) + SmallestMovedPoint(u1)-1)/2;
+            list:= (ListPerm(u1){[1..n]} + n) mod (2*n + 1) - n;
+            l:= List(list, AbsInt);
+            pi:= PermList(l); 
+
+            return SignPerm(u1 * pi);
+
+        else
+            return 1;
+        fi;
 end;
 
 

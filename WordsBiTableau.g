@@ -37,6 +37,6 @@ WordsBiTableau:= function(tab)
                 od;
             od;
 
-    return [rows, cols];
+    return List([rows, cols], MirroredWord);
 
 end;
