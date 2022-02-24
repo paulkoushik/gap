@@ -5,7 +5,7 @@
 #Requires to read BiPartitionWord.g before giving the inputs 
 
 YoungCharacter_Bn:= function(w1, w2)
-    local c, p, n, list, l, pi, lambda, t, t1, t2, pi0, u1;
+    local c, p, n, list, l, pi, lambda, t, t1, t2, pi0, u1, w;
 
 
 
