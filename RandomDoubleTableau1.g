@@ -2,7 +2,7 @@
 
 #Step-2: Then take the first k elements from the permuted list and arrange them into lambda-tableau.
 
-#Step-3: Then take the last (n-k)=l elements from that same permuted list and arrange them into mu-tableau.
+#Step-3: Then take the last (n-k)-l elements from that same permuted list and arrange them into mu-tableau.
 
 
 
@@ -16,7 +16,7 @@
 
 
 RandomDoubleTableau:= function(lambda, mu)
-local l, k, n, list, L, a, newlist, i;
+local l, k, n, list, L, a, new, j, newlist, i;
     
 
     l:= Sum(lambda);
