@@ -222,8 +222,8 @@ end;
 
 
 
-SpechtObject:= function(lambda1, lambda2)
-    local   lambda, w1, w2, w, A, sigma1, sigma2, sigma, u1, u2, u, B, sm, ;
+SpechtB_nObject:= function(lambda1, lambda2)
+    local   lambda, w1, w2, w, A, sigma1, sigma2, sigma, u1, u2, u, B, sm;
 
     lambda:= [lambda1, lambda2];
     w1:= List(ExpandedList(lambda1), String);
@@ -259,5 +259,5 @@ SpechtObject:= function(lambda1, lambda2)
 
 
 
-    return rec(sm:= sm, A:= A, B:= B, syt:= syt, k:= k);
+    return rec(sm:= sm, A:= A, B:= B);
 end;
