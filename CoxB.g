@@ -25,6 +25,10 @@ local i, gen;
 end;
 
 
+B_nGroup:= function(n)
+    return Centralizer(SymmetricGroup(2*n), PermList(Reversed([1..2*n])));
+end;
+
 
 CoxeterB:= function(n)
     #return Centralizer(SymmetricGroup(2*n), PermList(Reversed([1..2*n])));
@@ -42,7 +46,12 @@ end;
 #ArrangementsBn.g
 
 ArrangementsBn:= function(w)
-return Orbit(CoxeterB(Length(w)/2), w, Permuted);
+local a1, a2, sigma, pi;
+    a1:= Orbit(B_nGroup(Length(w)/2), w, Permuted);
+    a2:= Orbit(CoxeterB(Length(w)/2), w, Permuted);
+    sigma:= Sortex(ShallowCopy(a1));
+    pi:= Sortex(ShallowCopy(a2));
+return Permuted(a2, pi*sigma^-1);
 end;
 
 
@@ -287,10 +296,11 @@ end;
 
 
 
-SpechtB_nObject:= function(lambda1, lambda2)
-    local   lambda, w1, w2, w, A, sigma1, sigma2, sigma, u1, u2, u, B, sm;
+SpechtB_nObject:= function(lambda)
+    local   lambda1, lambda2, w1, w2, w, A, sigma1, sigma2, sigma, u1, u2, u, B, sm, syt, words, k;
 
-    lambda:= [lambda1, lambda2];
+    lambda1:= lambda[1];
+    lambda2:= lambda[2];
     w1:= List(ExpandedList(lambda1), String);
     w2:= ExpandedList(lambda2);
     w:= Concatenation(w1, w2, -Reversed(w2), Reversed(w1));
@@ -305,24 +315,17 @@ SpechtB_nObject:= function(lambda1, lambda2)
     B:= ArrangementsBn(u);
 
     sm:= SpechtMatrix_Bn(A, B);
+    syt:= SYTBn(lambda);
+
+    words:= List(syt, i -> WordsBiTableau(i));
+    k:= List(words, i -> [Position(A, i[1]), Position(B, i[2])]);
     
-# Need Standard Bi-tableaux
-# Use Standard Bi-tableaux to find the rows and columns they are sitting in the Specht Matrix
 
-#a:= WordsBiTableau(standard bi-tableaux);;
-#List([set of WordsBiTableaux], i-> [Position(A, i[1]), Position(B, i[2])]);
-
-
-
-
-
-
-
-
-
-
-
-
-
-    return rec(sm:= sm, A:= A, B:= B);
+    return rec(sm:= sm, A:= A, B:= B, k:= k, syt:= syt);
 end;
+
+
+
+
+
+

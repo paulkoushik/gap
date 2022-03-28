@@ -2,6 +2,24 @@ SBT:= function(lambda1, lambda2)
 local ;
 
 lambda:= [lambda1, lambda2];
+t:= CanonicalBiTableau(lambda1, lambda2);
+n:= Sum(lambda1) + Sum(lambda2);
+s:= SymmetricGroup(n);
+tab:= Orbit(s, t, OnTuplesTuplesTuples);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 list:= [];
 
 ### Standard Bi-Tableaux have entries only from {1,2,3,...,n}.
@@ -21,3 +39,21 @@ list:= [];
 
 
     syt2:= SYT(lambda2);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
