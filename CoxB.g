@@ -325,6 +325,19 @@ SpechtB_nObject:= function(lambda)
 end;
 
 
+RepMatBn:= function(specht, sigma)
+    local act, pi, rows_label, new_rows_label, sm_rows;
+
+    act:= ActionHomomorphism(CoxeterB(Length(specht.A[1])/2), specht.A, Permuted);
+    pi:= sigma^act;
+    rows_label:= List(specht.k, i -> i[1]);
+    new_rows_label:= OnTuples(rows_label, pi);
+    sm_rows:= List(specht.k, i -> specht.sm[i[1]]);
+
+    return List(new_rows_label, i -> SolutionMat(sm_rows, specht.sm[i]));
+end;
+
+
 
 
 
