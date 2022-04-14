@@ -290,10 +290,7 @@ SYTBn:= function(tuple)
 end;
 
 
-
-
-
-
+#SpechtB_nObject.g
 
 
 SpechtB_nObject:= function(lambda)
@@ -325,6 +322,9 @@ SpechtB_nObject:= function(lambda)
 end;
 
 
+#RepMatBn.g
+
+
 RepMatBn:= function(specht, sigma)
     local act, pi, rows_label, new_rows_label, sm_rows;
 
@@ -338,6 +338,50 @@ RepMatBn:= function(specht, sigma)
 end;
 
 
+#ClassRep.g
+
+
+pcycle:= function(o,l)
+return o+[2..l]; 
+end;
+
+
+ncycle:= function(o,l)
+return Concatenation([o+1,o..1],[2..o+l]);
+end;
+
+
+ClassRep:= function(lambda)
+    local w, o, l;
+    
+    w:=[];
+    o:= 0;   
+    for l in Reversed(lambda[2]) do
+        Append(w, ncycle(o,l));
+        o:= l+o;
+    od;
+    
+    for l in lambda[1] do          
+        Append(w, pcycle(o,l));
+        o:= l+o;
+    od;
+    return w;
+end;
+
+
+#SpechtBnCharacter.g
+
+
+SpechtBnCharacter:= function(lambda, gens)
+    local n, Bipartitions, specht, classes, list;
+    n:= Sum(lambda[1])+Sum(lambda[2]);
+    Bipartitions:= PartitionTuples(n,2);
+    specht:= SpechtB_nObject(lambda);
+    classes:= List(Bipartitions, ClassRep);
+    classes[1]:= [1,1];
+    list:= List(gens, sigma -> RepMatBn(specht, sigma));
+    return List(classes, c -> TraceMat(Product(list{c})));
+end;
 
 
 
