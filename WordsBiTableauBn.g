@@ -28,4 +28,3 @@ WordsBiTableauBn:= function(tab)
 
     return [rows, cols];
 end;
-
