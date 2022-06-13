@@ -321,6 +321,21 @@ return M;
 end;
 
 
+#combination of RepMatBn.g and SignMatBn.g
+RepresentativeMat:= function(specht, sigma)
+local n, list;
+
+    if sigma <> () then
+        n:= (LargestMovedPoint(sigma) + SmallestMovedPoint(sigma)-1)/2;
+        list:= AltSignPartPermBn(sigma);
+            if Size(Set(list)) = 2 then
+                return SignMatBn(specht, sigma);
+            fi;
+    else
+        return RepMatBn(specht, sigma);
+    fi;
+
+end;
 ###############################################################################
 
 
