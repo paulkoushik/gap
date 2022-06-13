@@ -143,32 +143,41 @@ end;
 
 
 
-SignPartPermBn:= function(sigma)
-local n, list, l, pi, l1, l2, ll, pi0, p, p0, int;
+#SignPartPermBn:= function(sigma)
+#local n, list, l, pi, l1, l2, ll, pi0, p, p0, int;
 
-    if sigma <> () then
-        n:= (LargestMovedPoint(sigma) + SmallestMovedPoint(sigma)-1)/2;
-        list:= (ListPerm(sigma, 2*n) + n) mod (2*n + 1) - n;
-        l:= List(list, AbsInt);
-        l1:= l{[n+1..2*n]};
-        l2:= -l1 mod (2*n+1);
-        l{[n+1..2*n]}:= l2;
-        ll:= l;
-        pi:= PermList(ll); 
-        pi0:= sigma/pi;
-        p:= MovedPoints(pi0);
-        p0:= p{[1..Length(p)/2]};
-        
-        int:= [1..n];
-        int{p0}:= -p0;
+#    if sigma <> () then
+#        n:= (LargestMovedPoint(sigma) + SmallestMovedPoint(sigma)-1)/2;
+#        list:= (ListPerm(sigma, 2*n) + n) mod (2*n + 1) - n;
+#        l:= List(list, AbsInt);
+#        l1:= l{[n+1..2*n]};
+#        l2:= -l1 mod (2*n+1);
+#        l{[n+1..2*n]}:= l2;
+#        ll:= l;
+#        pi:= PermList(ll); 
+#        pi0:= sigma/pi;
+#        p:= MovedPoints(pi0);
+#        p0:= p{[1..Length(p)/2]};
+#        
+#        int:= [1..n];
+#        int{p0}:= -p0;
             
-    return List(int, i -> SignInt(i));
+#    return List(int, i -> SignInt(i));
 
-    else
-        return sigma;
-    fi;
+#    else
+#        return sigma;
+#    fi;
+#end;
+
+
+
+AltSignPartPermBn:= function(sigma)
+local n, r, l;
+    n:= (LargestMovedPoint(sigma) + SmallestMovedPoint(sigma)-1)/2;
+    r:= rec(("true"):= -1, ("false"):= 1);
+    l:= List([1..n], i -> r.(String(i^sigma > n)));
+return l;
 end;
-
 
 
 
@@ -303,7 +312,7 @@ local n, so, l, sign, index, ind, M;
 
     n:= (LargestMovedPoint(sigma) + SmallestMovedPoint(sigma)-1)/2;
     l:= List(specht.k, i -> i[1]);
-    sign:= SignPartPermBn(sigma);
+    sign:= AltSignPartPermBn(sigma);
     index:= List(specht.A{l}, i -> i[1][2]);
     ind:= List(specht.A{l}, i -> Product([1..n], j -> sign[j]^i[j][2]));
     M:= DiagonalMat(ind);
