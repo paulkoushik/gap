@@ -143,30 +143,31 @@ end;
 
 
 
-PermPartBn:= function(u1)
+SignPartPermBn:= function(sigma)
 local n, list, l, pi, l1, l2, ll, pi0, p, p0, int;
-        if u1 <> () then
-            n:= (LargestMovedPoint(u1) + SmallestMovedPoint(u1)-1)/2;
-            list:= (ListPerm(u1, 2*n) + n) mod (2*n + 1) - n;
-            l:= List(list, AbsInt);
-            l1:= l{[n+1..2*n]};
-            l2:= -l1 mod (2*n+1);
-            l{[n+1..2*n]}:= l2;
-            ll:= l;
-            pi:= PermList(ll);
-            pi0:= u1/pi;
-            p:= MovedPoints(pi0);
-            p0:= p{[1..Length(p)/2]};
-            
-            int:= [1..n];
-            int{p0}:= -p0;
-            
-            return int;
 
-        else
-            return u1;
-        fi;
-    end;
+    if sigma <> () then
+        n:= (LargestMovedPoint(sigma) + SmallestMovedPoint(sigma)-1)/2;
+        list:= (ListPerm(sigma, 2*n) + n) mod (2*n + 1) - n;
+        l:= List(list, AbsInt);
+        l1:= l{[n+1..2*n]};
+        l2:= -l1 mod (2*n+1);
+        l{[n+1..2*n]}:= l2;
+        ll:= l;
+        pi:= PermList(ll); 
+        pi0:= sigma/pi;
+        p:= MovedPoints(pi0);
+        p0:= p{[1..Length(p)/2]};
+        
+        int:= [1..n];
+        int{p0}:= -p0;
+            
+    return List(int, i -> SignInt(i));
+
+    else
+        return sigma;
+    fi;
+end;
 
 
 
@@ -274,7 +275,11 @@ SpechtB_nObject:= function(lambda)
     return rec(sm:= sm, A:= A, B:= B, k:= k, syt:= syt);
 end;
 
-
+#####################################################################
+#combine RepMatBn and SignChangeMatBn such that it takes any sigma and returns the
+#representing matrix. Put a condition such that if there is no negative integers in
+#the PermPartBn of the sigma then it passes through RepMatBn, otherwise through
+#SignChangeMatBn function.
 
 RepMatBn:= function(specht, sigma)
     local pi, smT, l, mat, k, M;
@@ -292,6 +297,22 @@ end;
 
 
 
+
+SignMatBn:= function(specht, sigma)
+local n, so, l, sign, index, ind, M;
+
+    n:= (LargestMovedPoint(sigma) + SmallestMovedPoint(sigma)-1)/2;
+    l:= List(specht.k, i -> i[1]);
+    sign:= SignPartPermBn(sigma);
+    index:= List(specht.A{l}, i -> i[1][2]);
+    ind:= List(specht.A{l}, i -> Product([1..n], j -> sign[j]^i[j][2]));
+    M:= DiagonalMat(ind);
+
+return M;
+end;
+
+
+###############################################################################
 
 
 
