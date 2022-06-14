@@ -330,6 +330,8 @@ local n, list;
         list:= AltSignPartPermBn(sigma);
             if Size(Set(list)) = 2 then
                 return SignMatBn(specht, sigma);
+            else
+                return RepMatBn(specht, sigma);
             fi;
     else
         return RepMatBn(specht, sigma);
@@ -385,7 +387,7 @@ SpechtBnCharacter:= function(lambda, gens)
     specht:= SpechtB_nObject(lambda);
     classes:= List(Bipartitions, ClassRep);
     classes[1]:= [1,1];
-    list:= List(gens, sigma -> RepMatBn(specht, sigma));
+    list:= List(gens, sigma -> RepresentativeMat(specht, sigma));
     return List(classes, c -> TraceMat(Product(list{c})));
 end;
 
