@@ -284,6 +284,18 @@ SpechtB_nObject:= function(lambda)
     return rec(sm:= sm, A:= A, B:= B, k:= k, syt:= syt);
 end;
 
+
+
+#Takes an element of S_2n as an input returns where the first n points are being 
+#moved to under the permutation, wqith their signs included
+
+SignedImageList:= function(sigma)
+local n, l;
+    n:= (LargestMovedPoint(sigma) + SmallestMovedPoint(sigma) -1)/2;
+    l:= ListPerm(sigma);
+    return (l{[1..n]}+n) mod (2*n+1) - n;
+end;
+
 #####################################################################
 #combine RepMatBn and SignChangeMatBn such that it takes any sigma and returns the
 #representing matrix. Put a condition such that if there is no negative integers in
@@ -298,7 +310,7 @@ RepMatBn:= function(specht, sigma)
     l:= List(specht.k, i -> i[2]);
     mat:= smT{l};
 
-    k:= List(smT, i -> Permuted(i, pi));
+    k:= List(mat, i -> Permuted(i, pi));
     M:= List(k, i -> SolutionMat(mat, i));
 
     return M;
@@ -323,16 +335,15 @@ end;
 
 #combination of RepMatBn.g and SignMatBn.g
 RepresentativeMat:= function(specht, sigma)
-local n, list;
+local l, l1, pi, M1, M2;
 
     if sigma <> () then
-        n:= (LargestMovedPoint(sigma) + SmallestMovedPoint(sigma)-1)/2;
-        list:= AltSignPartPermBn(sigma);
-            if Size(Set(list)) = 2 then
-                return SignMatBn(specht, sigma);
-            else
-                return RepMatBn(specht, sigma);
-            fi;
+        l:= SignedImageList(sigma);
+        l1:= List(l, AbsInt);
+        pi:= PermList(l1);
+        M1:= SignMatBn(specht, sigma);
+        M2:= RepMatBn(specht, pi);
+        return M1*M2;
     else
         return RepMatBn(specht, sigma);
     fi;
