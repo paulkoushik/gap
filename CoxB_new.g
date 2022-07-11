@@ -287,7 +287,7 @@ end;
 
 
 #Takes an element of S_2n as an input returns where the first n points are being 
-#moved to under the permutation, wqith their signs included
+#moved to under the permutation, with their signs included
 
 SignedImageList:= function(sigma)
 local n, l;
