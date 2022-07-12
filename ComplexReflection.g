@@ -52,6 +52,28 @@ end;
 #######################################################
 
 
+ComplexReflectionGroup:= function(r,n)
+local gens, G, sb, v, a, w, W;
+gens:= CRTGen(r,n);
+G:= Group(gens);
+sb:= IdentityMat(n);
+for v in sb do
+    for a in gens do
+        w:= v*a;
+        if not w in sb then
+            Add(sb, w);
+        fi;
+    od;
+od;
+W:= Action(G, sb, OnRight);
+
+return W;
+end;
+
+
+
+#######################################################
+
 CanonicalTableau:= function(lambda)
 local t, o, l;
     t:= [];
@@ -182,7 +204,7 @@ SpechtMatCRG:= function(A1, A2)
         for u in A1 do
             row:= [];
                 for v in A2 do
-                    Add(row, YoungCharNew(u,v));
+                    Add(row, YoungCharCRG(u,v));
                 od;
             Add(matrix, row);
         od;
