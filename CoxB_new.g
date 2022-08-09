@@ -263,7 +263,7 @@ end;
 
 
 
-SpechtB_nObject:= function(lambda)
+SpechtBnObject:= function(lambda)
     local n, w1, w2, A, sigma, B, sm, syt, words, k;
 
     n:= Sum(lambda[1])+Sum(lambda[2]);
@@ -398,7 +398,7 @@ SpechtBnCharacter:= function(lambda, gens)
     specht:= SpechtB_nObject(lambda);
     classes:= List(Bipartitions, ClassRep);
     classes[1]:= [1,1];
-    list:= List(gens, sigma -> RepresentativeMat(specht, sigma));
+    list:= List(gens, sigma -> RepresentativeMatBn(specht, sigma));
     return List(classes, c -> TraceMat(Product(list{c})));
 end;
 

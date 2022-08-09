@@ -52,22 +52,22 @@ end;
 #######################################################
 
 
-#ComplexReflectionGroup:= function(r,n)
-#local gens, G, sb, v, a, w, W;
-#gens:= CRTGen(r,n);
-#G:= Group(gens);
-#sb:= IdentityMat(n);
-#for v in sb do
-#    for a in gens do
-#        w:= v*a;
-#        if not w in sb then
-#            Add(sb, w);
-#        fi;
-#    od;
-#od;
-#W:= Action(G, sb, OnRight);
-#return W;
-#end;
+ComplexReflectionPermGroup:= function(r,n)
+local gens, G, sb, v, a, w, W;
+gens:= CRTGen(r,n);
+G:= Group(gens);
+sb:= IdentityMat(n);
+for v in sb do
+    for a in gens do
+        w:= v*a;
+        if not w in sb then
+            Add(sb, w);
+        fi;
+    od;
+od;
+W:= Action(G, sb, OnRight);
+return W;
+end;
 
 
 ComplexReflectionGroup:= function(r,n)
@@ -306,6 +306,19 @@ end;
 
 #######################################################
 
+SignCRG:= function(g)
+return List(g, x -> First(x, i -> i <> 0));
+end;
+
+PermCRG:= function(g)
+return List(g, x -> PositionProperty(x, i -> i <> 0));
+end;
+
+#for evry g in G, it can be factored in two matrices, D and P
+#where D:= DiagonalMat(SignCRG(g));
+#and P:= List(g, x -> List(x, y -> y^n)); where n:= Length(g);
+
+
 #Let G be the complex reflection group considered as a matrix group.
 #Let g is an element (a matrix) of G.
 
@@ -350,6 +363,8 @@ end;
 
 #######################################################
 
+#Conjugacy class representative for each lambda can be decided by BlockMatCRG.g
+#This is equivalent to ClassRep.g for second construction of Type-Bn groups
 
 BlockMatCRG:= function(lambda)
 local n, M, o, i, a, mat, r;
@@ -370,6 +385,34 @@ od;
 return M;
 end;
 
+
+#Takes the inputs as two arguments, r-th root of unity (lambda is a r-tuple)
+#and n is a natural number of which lambda is a partition
+
+ClassRepresentativesCRG:= function(r,n)
+    local P;
+    P:= PartitionTuples(n, r);
+    return List(P, BlockMatCRG);
+end;
+
+
+ConjugacyClassesCRG:= function(r,n)
+    local ClassReps, G;
+    ClassReps:= ClassRepresentativesCRG(r,n);
+    G:= ComplexReflectionGroup(r,n);
+    return List(ClassReps, x -> ConjugacyClass(G, x));
+end;
+
+
+SpechtCRGCharacter:= function(lambda)
+    local n, r, ClassReps, specht, RepMats;
+    n:= Sum(lambda, Sum);
+    r:= Length(lambda);
+    ClassReps:= ClassRepresentativesCRG(r,n);
+    specht:= SpechtCRGObject(lambda);
+    RepMats:= List(ClassReps, x -> RepresentativeMatCRG(specht, x));
+    return List(RepMats, x -> Trace(x));
+end;
 
 #######################################################
 
