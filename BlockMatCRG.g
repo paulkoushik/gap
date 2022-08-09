@@ -1,17 +1,14 @@
 BlockMatCRG:= function(lambda)
-local n, M, o, i, a, mat;
-n:= Sum(List(lambda, i -> Sum(i)));
+local n, M, o, i, a, mat, r;
+n:= Sum(lambda, Sum);
+r:= Length(lambda);
 M:= NullMat(n,n);
 o:= 0;
-for i in lambda do
-    for a in i do
-        if a = 1 then
-            mat:= [[E(n)]];
+for i in [1..r] do
+    for a in lambda[i] do
             
-        else
             mat:= PermutationMat(PermList(([1..a] mod a) + 1), a);
-            mat[a][1]:= E(n);
-        fi;
+            mat[a][1]:= E(r)^(i-1);
 
         M{o+[1..a]}{o+[1..a]}:= mat;
         o:= o + a;

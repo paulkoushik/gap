@@ -171,7 +171,7 @@ end;
 
 
 
-AltSignPartPermBn:= function(sigma)
+SignPartPermBn:= function(sigma)
 local n, r, l;
     n:= (LargestMovedPoint(sigma) + SmallestMovedPoint(sigma)-1)/2;
     r:= rec(("true"):= -1, ("false"):= 1);
@@ -299,7 +299,7 @@ end;
 #####################################################################
 #combine RepMatBn and SignChangeMatBn such that it takes any sigma and returns the
 #representing matrix. Put a condition such that if there is no negative integers in
-#the PermPartBn of the sigma then it passes through RepMatBn, otherwise through
+#the SignPartPermBn of the sigma then it passes through RepMatBn, otherwise through
 #SignChangeMatBn function.
 
 RepMatBn:= function(specht, sigma)
@@ -324,7 +324,7 @@ local n, so, l, sign, index, ind, M;
 
     n:= (LargestMovedPoint(sigma) + SmallestMovedPoint(sigma)-1)/2;
     l:= List(specht.k, i -> i[1]);
-    sign:= AltSignPartPermBn(sigma);
+    sign:= SignPartPermBn(sigma);
     index:= List(specht.A{l}, i -> i[1][2]);
     ind:= List(specht.A{l}, i -> Product([1..n], j -> sign[j]^i[j][2]));
     M:= DiagonalMat(ind);
@@ -334,7 +334,7 @@ end;
 
 
 #combination of RepMatBn.g and SignMatBn.g
-RepresentativeMat:= function(specht, sigma)
+RepresentativeMatBn:= function(specht, sigma)
 local l, l1, pi, M1, M2;
 
     if sigma <> () then

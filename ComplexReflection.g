@@ -52,24 +52,29 @@ end;
 #######################################################
 
 
+#ComplexReflectionGroup:= function(r,n)
+#local gens, G, sb, v, a, w, W;
+#gens:= CRTGen(r,n);
+#G:= Group(gens);
+#sb:= IdentityMat(n);
+#for v in sb do
+#    for a in gens do
+#        w:= v*a;
+#        if not w in sb then
+#            Add(sb, w);
+#        fi;
+#    od;
+#od;
+#W:= Action(G, sb, OnRight);
+#return W;
+#end;
+
+
 ComplexReflectionGroup:= function(r,n)
-local gens, G, sb, v, a, w, W;
-gens:= CRTGen(r,n);
-G:= Group(gens);
-sb:= IdentityMat(n);
-for v in sb do
-    for a in gens do
-        w:= v*a;
-        if not w in sb then
-            Add(sb, w);
-        fi;
-    od;
-od;
-W:= Action(G, sb, OnRight);
-
-return W;
+local gen;
+gen:= CRTGen(r,n);
+return Group(gen);
 end;
-
 
 
 #######################################################
@@ -216,7 +221,7 @@ end;
 
 
 #tuple = [lambda1, lambda2]
-SYTBn:= function(tuple)
+SYT_CRG:= function(tuple)
     local   isOneHook,  removeOneHook,  addOneHook,  n,  list,  i, k, lambda,
             new,  t;
     #here lambda is an ordinary partition
@@ -262,7 +267,7 @@ SYTBn:= function(tuple)
         for i in Reversed([1..Length(lambda)]) do
             if isOneHook(lambda, i) then
                 new:= removeOneHook(tuple, k, i);
-                for t in SYTBn(new) do
+                for t in SYT_CRG(new) do
                     addOneHook(t, k, i, n);
                     Add(list, t);
                 od;
@@ -277,7 +282,7 @@ end;
 #######################################################
 
 
-SpechtB_nObject:= function(lambda)
+SpechtCRGObject:= function(lambda)
     local n, w1, w2, A, sigma, B, sm, syt, words, k;
 
     n:= Sum(lambda, Sum);
@@ -289,16 +294,84 @@ SpechtB_nObject:= function(lambda)
     B:= Arrangements(w2, n);
 
     sm:= SpechtMatCRG(A, B);
-#    syt:= SYTBn(lambda);
+    syt:= SYT_CRG(lambda);
 
-#    words:= List(syt, WordsBiTableauBn);
-#    k:= List(words, i -> [Position(A, i[1]), Position(B, i[2])]);
+    words:= List(syt, WordsCRGTableau);
+    k:= List(words, i -> [Position(A, i[1]), Position(B, i[2])]);
     
 
-#   return rec(sm:= sm, A:= A, B:= B, k:= k, syt:= syt);
+   return rec(sm:= sm, A:= A, B:= B, k:= k, syt:= syt);
 end;
 
 
 #######################################################
+
+#Let G be the complex reflection group considered as a matrix group.
+#Let g is an element (a matrix) of G.
+
+RepMatCRG:= function(specht, g)
+    local n, sigma, pi, smT, l, mat, k, M;
+    
+    n:= Length(g);
+    sigma:= PermList(List(g, x -> PositionProperty(x, i -> i <> 0)));
+    pi:= Permutation(sigma, specht.A, Permuted);
+    smT:= TransposedMat(specht.sm);
+    l:= List(specht.k, i -> i[2]);
+    mat:= smT{l};
+
+    k:= List(mat, i -> Permuted(i, pi));
+    M:= List(k, i -> SolutionMat(mat, i));
+
+    return M;
+end;
+
+
+SignMatCRG:= function(specht, g)
+local n, so, l, sign, index, ind, M;
+
+    n:= Length(g);
+    l:= List(specht.k, i -> i[1]);
+    sign:= List(g, x -> First(x, i -> i <> 0));
+#index:= List(specht.A{l}, i -> i[1][2]);
+    ind:= List(specht.A{l}, i -> Product([1..n], j -> sign[j]^i[j][2]));
+    M:= DiagonalMat(ind);
+
+return M;
+end;
+
+
+RepresentativeMatCRG:= function(specht, g)
+local M, N;
+    M:= SignMatCRG(specht, g);
+    N:= RepMatCRG(specht, g);
+return M*N;
+end;
+
+
+#######################################################
+
+
+BlockMatCRG:= function(lambda)
+local n, M, o, i, a, mat, r;
+n:= Sum(lambda, Sum);
+r:= Length(lambda);
+M:= NullMat(n,n);
+o:= 0;
+for i in [1..r] do
+    for a in lambda[i] do
+            
+            mat:= PermutationMat(PermList(([1..a] mod a) + 1), a);
+            mat[a][1]:= E(r)^(i-1);
+
+        M{o+[1..a]}{o+[1..a]}:= mat;
+        o:= o + a;
+    od;
+od;
+return M;
+end;
+
+
+#######################################################
+
 
 
