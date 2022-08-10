@@ -12,23 +12,35 @@ end;
 
 
 
-ExpandedListCRG:= function(lambda)
-local i, j, l, k, w1, w2, w3;
-w1:= [];
-w2:= [];
-w3:= [];
-l:= List(lambda, ExpandedListAn);
-for i in l[1] do
-    Add(w1, [i,0]);
-od;
-for j in l[2] do
-    Add(w2, [j,1]);
-od;
-for k in l[3] do
-    Add(w3, [k,2]);
-od;
+#ExpandedListCRG:= function(lambda)
+#local i, j, l, k, w1, w2, w3;
+#w1:= [];
+#w2:= [];
+#w3:= [];
+#l:= List(lambda, ExpandedListAn);
+#for i in l[1] do
+#    Add(w1, [i,0]);
+#od;
+#for j in l[2] do
+#    Add(w2, [j,1]);
+#od;
+#for k in l[3] do
+#    Add(w3, [k,2]);
+#od;
+#return Concatenation(w1,w2,w3);
+#end;
 
-return Concatenation(w1,w2,w3);
+
+ExpandedListCRG:= function(lambda)
+local W, l, i, j;
+W:= [];
+l:= List(lambda, ExpandedListAn);
+for i in [1..Length(lambda)] do
+    for j in l[i] do
+        Add(W, [j, i-1]);
+    od;
+od;
+return W;
 end;
 
 
