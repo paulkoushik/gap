@@ -163,7 +163,7 @@ end;
 
 #sigma is a permutation in S_n. 
 
-#atrix:= function(specht, sigma)
+#RepMatrix:= function(specht, sigma)
 #local   pi, rows, stdrows, stdrowspermuted,  m;
 #
 #pi:= Permutation(sigma, specht.A, Permuted);
