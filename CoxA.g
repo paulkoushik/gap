@@ -161,15 +161,26 @@ end;
 #end;
 
 
+#sigma is a permutation in S_n. 
+
+#atrix:= function(specht, sigma)
+#local   pi, rows, stdrows, stdrowspermuted,  m;
+#
+#pi:= Permutation(sigma, specht.A, Permuted);
+#rows:= specht.k;
+#stdrows:= TransposedMat(specht.sm){rows};
+#stdrowspermuted:= List(stdrows, l -> Permuted(l, pi));
+#m:= List(stdrowspermuted, l -> SolutionMat(stdrows, l)); 
+#
+#return m;
+#
+
 RepMatrix:= function(specht, sigma)
-    local   pi, rows, stdrows, stdrowspermuted,  m;
+    local   pi, stdcolspermuted,  m;
 
     pi:= Permutation(sigma, specht.A, Permuted);
-    rows:= specht.k;
-    stdrows:= TransposedMat(specht.sm){rows};
-    stdrowspermuted:= List(stdrows, l -> Permuted(l, pi));
-    m:= List(stdrowspermuted, l -> SolutionMat(stdrows, l)); 
-
+    stdcolspermuted:= List(TransposedMat(specht.sm), c -> Permuted(c, pi));
+    m:= List(stdcolspermuted, c -> SolutionMat(TransposedMat(specht.sm), c)); 
     return m;
 end;
 

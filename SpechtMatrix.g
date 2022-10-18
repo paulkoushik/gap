@@ -10,3 +10,8 @@ SpechtMatrix:= function(A1, A2)
         od;
 return matrix;
 end;
+
+
+#SpechtMatrix:= function(A1, A2)
+#   return List(A1, a -> List(B, b -> YoungCharacter(a,b)));
+#end;
