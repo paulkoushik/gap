@@ -91,6 +91,8 @@ end;
 
 #######################################################
 
+#Generalise the function
+
 CanonicalTableau:= function(lambda)
 local t, o, l;
     t:= [];
@@ -143,7 +145,7 @@ end;
 
 #######################################################
 
-
+#Generalise the function
 
 WordsCRGTableau:= function(tab)
     local rows, cols, i, k, a, b, c, tab1, tab2, tab3;
@@ -186,6 +188,13 @@ WordsCRGTableau:= function(tab)
 
     return [rows, cols];
 end;
+
+
+
+#for i in tab do
+#    for j in [1..Length(tab[i])] do
+#        for k in [1..Length(tab[i][j])] do
+#            a:=
 
 
 

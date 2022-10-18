@@ -151,29 +151,27 @@ end;
 
 #StdCo:= function(t, sm, A, k)
 
-StdCo:= function(t, specht)
-    local   x,  i,  sm;
-
-    x:= WordsTableau(t).rows;
-    i:= Position(specht.A, x);
-    sm:= specht.sm;
-    return SolutionMat(sm{specht.k}, sm[i]);
-end;
+#StdCo:= function(t, specht)
+#    local   x,  i,  sm;
+#
+#    x:= WordsTableau(t).rows;
+#    i:= Position(specht.A, x);
+#    sm:= specht.sm;
+#    return SolutionMat(sm{specht.k}, sm[i]);
+#end;
 
 
 RepMatrix:= function(specht, sigma)
-    local   tt,  m;
+    local   pi, rows, stdrows, stdrowspermuted,  m;
 
-    tt:= List(specht.syt, x -> OnTuplesTuples(x, sigma));
-    m:= List(tt, t-> StdCo(t, specht));
+    pi:= Permutation(sigma, specht.A, Permuted);
+    rows:= specht.k;
+    stdrows:= TransposedMat(specht.sm){rows};
+    stdrowspermuted:= List(stdrows, l -> Permuted(l, pi));
+    m:= List(stdrowspermuted, l -> SolutionMat(stdrows, l)); 
 
     return m;
 end;
-
-
-#cc:= ConjugacyClasses(S_n);
-#perms:= List(cc, c -> Representative(c));
-
 
 SpechtCharacter:= function(lambda, perms)
     local   specht;

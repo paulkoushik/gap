@@ -1,5 +1,5 @@
 InterTableau:= function(t,s)
-local tt, a, uu, row, i, k;
+local cols, tt, a, uu, row, i, k;
     cols:= WordsTableau(t).cols;
     uu:= List(t[1], x -> []);
         for row in s do
