@@ -297,10 +297,10 @@ local n, l;
 end;
 
 #####################################################################
-#combine RepMatBn and SignChangeMatBn such that it takes any sigma and returns the
+#combine RepMatBn and SignMatBn such that it takes any sigma and returns the
 #representing matrix. Put a condition such that if there is no negative integers in
 #the SignPartPermBn of the sigma then it passes through RepMatBn, otherwise through
-#SignChangeMatBn function.
+#SignMatBn function.
 
 RepMatBn:= function(specht, sigma)
     local pi, smT, l, mat, k, M;
@@ -395,7 +395,7 @@ SpechtBnCharacter:= function(lambda, gens)
     local n, Bipartitions, specht, classes, list;
     n:= Sum(lambda[1])+Sum(lambda[2]);
     Bipartitions:= PartitionTuples(n,2);
-    specht:= SpechtB_nObject(lambda);
+    specht:= SpechtBnObject(lambda);
     classes:= List(Bipartitions, ClassRep);
     classes[1]:= [1,1];
     list:= List(gens, sigma -> RepresentativeMatBn(specht, sigma));
