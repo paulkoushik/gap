@@ -180,7 +180,7 @@ RepMatrix:= function(specht, sigma)
 
     pi:= Permutation(sigma, specht.A, Permuted);
     stdcolspermuted:= List(TransposedMat(specht.sm), c -> Permuted(c, pi));
-    m:= List(stdcolspermuted, c -> SolutionMat(TransposedMat(specht.sm), c)); 
+    r
     return m;
 end;
 

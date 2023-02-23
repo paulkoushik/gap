@@ -1,3 +1,9 @@
+#P:= PartitionTuples(n, 3); produces the partition of n as a 3-tuple
+
+
+###############################################
+
+
 ExpandedListAn:= function(P)
 local i, p, W;
 W:= [];
@@ -241,7 +247,7 @@ end;
 #######################################################
 
 
-#tuple = [lambda1, lambda2]
+#tuple = [lambda1, lambda2, lambda3]
 SYT_CRG:= function(tuple)
     local   isOneHook,  removeOneHook,  addOneHook,  n,  list,  i, k, lambda,
             new,  t;
@@ -327,6 +333,7 @@ end;
 
 #######################################################
 
+
 SignCRG:= function(g)
 return List(g, x -> First(x, i -> i <> 0));
 end;
@@ -407,7 +414,7 @@ return M;
 end;
 
 
-#Takes the inputs as two arguments, r-th root of unity (lambda is a r-tuple)
+#Takes the input as two arguments, r-th root of unity (lambda is a r-tuple)
 #and n is a natural number of which lambda is a partition
 
 ClassRepresentativesCRG:= function(r,n)
