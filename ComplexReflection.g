@@ -344,7 +344,7 @@ end;
 
 #for evry g in G, it can be factored in two matrices, D and P
 #where D:= DiagonalMat(SignCRG(g));
-#and P:= List(g, x -> List(x, y -> y^n)); where n:= Length(g);
+#and P:= List(g, x -> List(x, y -> y^r)); where r implies r-th roots of unity
 
 
 #Let G be the complex reflection group considered as a matrix group.

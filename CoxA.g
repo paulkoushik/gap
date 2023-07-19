@@ -163,26 +163,26 @@ end;
 
 #sigma is a permutation in S_n. 
 
-#RepMatrix:= function(specht, sigma)
-#local   pi, rows, stdrows, stdrowspermuted,  m;
-#
-#pi:= Permutation(sigma, specht.A, Permuted);
-#rows:= specht.k;
-#stdrows:= TransposedMat(specht.sm){rows};
-#stdrowspermuted:= List(stdrows, l -> Permuted(l, pi));
-#m:= List(stdrowspermuted, l -> SolutionMat(stdrows, l)); 
-#
-#return m;
-#
-
 RepMatrix:= function(specht, sigma)
-    local   pi, stdcolspermuted,  m;
+local   pi, rows, stdrows, stdrowspermuted,  m;
 
-    pi:= Permutation(sigma, specht.A, Permuted);
-    stdcolspermuted:= List(TransposedMat(specht.sm), c -> Permuted(c, pi));
-    r
-    return m;
+pi:= Permutation(sigma, specht.A, Permuted);
+rows:= specht.k;
+stdrows:= TransposedMat(specht.sm){rows};
+stdrowspermuted:= List(stdrows, l -> Permuted(l, pi));
+m:= List(stdrowspermuted, l -> SolutionMat(stdrows, l));
+
+return m;
 end;
+
+#RepMatrix:= function(specht, sigma)
+#    local   pi, stdcolspermuted,  m;
+
+#    pi:= Permutation(sigma, specht.A, Permuted);
+#    stdcolspermuted:= List(TransposedMat(specht.sm), c -> Permuted(c, pi));
+########    m:= List(stdcolspermuted, l -> SolutionMat(TransposedMat(specht.so, l)));
+#    return m;
+#end;
 
 SpechtCharacter:= function(lambda, perms)
     local   specht;
