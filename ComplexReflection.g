@@ -310,22 +310,36 @@ end;
 
 
 SpechtCRGObject:= function(lambda)
-    local n, w1, w2, A, sigma, B, sm, syt, words, k;
+    local n, w1, w1reversed, w2reversed, w2, A, sigma, B, sm, syt, words, k;
 
     n:= Sum(lambda, Sum);
     w1:= ExpandedListCRG(lambda);
-    A:= Arrangements(w1, n);
+    
+    #sorting the words lexicographically in the set of all arrangements of w1
+    
+    w1reversed:= List(Arrangements(List(w1, Reversed), Length(w1)));
+    A:= List(w1reversed, w -> List(w, Reversed));
+    
+    #ind:= List(A, i -> List(i, j -> j[2]));
+    #pi:= Sortex(ind);
+    #A1:= Permuted(A, pi);
 
     sigma:= List(lambda, AssociatedPartition);
     w2:= ExpandedListCRG(sigma);
-    B:= Arrangements(w2, n);
+    
+    #sorting the words lexicographically in the set of all arrangements of w2
+    
+    w2reversed:= List(Arrangements(List(w2, Reversed), Length(w2)));
+    B:= List(w2reversed, w -> List(w, Reversed));
 
     sm:= SpechtMatCRG(A, B);
+    #sm:= SpechtMatCRG(A1, B);
+    
     syt:= SYT_CRG(lambda);
 
     words:= List(syt, WordsCRGTableau);
     k:= List(words, i -> [Position(A, i[1]), Position(B, i[2])]);
-    
+    #k:= List(words, i -> [Position(A1, i[1]), Position(B, i[2])]);
 
    return rec(sm:= sm, A:= A, B:= B, k:= k, syt:= syt);
 end;
@@ -342,7 +356,7 @@ PermCRG:= function(g)
 return List(g, x -> PositionProperty(x, i -> i <> 0));
 end;
 
-#for evry g in G, it can be factored in two matrices, D and P
+#for every g in G, it can be factored in two matrices, D and P
 #where D:= DiagonalMat(SignCRG(g));
 #and P:= List(g, x -> List(x, y -> y^r)); where r implies r-th roots of unity
 

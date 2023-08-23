@@ -135,14 +135,16 @@ end;
 
 
 SpechtObject:= function(lambda)
-    local   syt,  a,  A,  k,  B,  sm;
+    local   syt,  a,  A,  k,  b,  B,  sm;
 
     syt:= SYT(lambda);
 
     a:= ExpandedList(lambda);
     A:= Arrangements(a, Size(a));
-    k:= List(syt, x -> Position(A, WordsTableau(x).rows));
-    B:= List(syt, x -> WordsTableau(x).cols);
+    #B:= List(syt, x -> WordsTableau(x).cols);
+    b:= ExpandedList(AssociatedPartition(lambda));
+    B:= Arrangements(b, Size(b));
+    k:= List(syt, x -> [Position(A, WordsTableau(x).rows), Position(B, WordsTableau(x).cols)]);
 
     sm:= SpechtMatrix(A, B);
 
@@ -164,13 +166,16 @@ end;
 #sigma is a permutation in S_n. 
 
 RepMatrix:= function(specht, sigma)
-local   pi, rows, stdrows, stdrowspermuted,  m;
+local   pi, rows, cols, i, stdrows, stdcols, stdrowspermuted, stdcolspermuted, m;
 
 pi:= Permutation(sigma, specht.A, Permuted);
-rows:= specht.k;
-stdrows:= TransposedMat(specht.sm){rows};
-stdrowspermuted:= List(stdrows, l -> Permuted(l, pi));
-m:= List(stdrowspermuted, l -> SolutionMat(stdrows, l));
+#rows:= specht.k;
+cols:= List(specht.k, i -> i[2]);
+#stdrows:= TransposedMat(specht.sm){rows};
+stdcols:= TransposedMat(specht.sm){cols};
+#stdrowspermuted:= List(stdrows, l -> Permuted(l, pi));
+stdcolspermuted:= List(stdcols, l -> Permuted(l, pi));
+m:= List(stdcolspermuted, l -> SolutionMat(stdcols, l));
 
 return m;
 end;
