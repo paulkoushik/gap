@@ -19,18 +19,19 @@ return G;
 end;
 
 
-#cycle:= function(n)
-#return ([1..n] mod n) + 1;
-#end;
-
-
 #Class representatives 
 SymmRep:= function(lambda)
-local p, classes, cycle_list, cycle_structure;
+local cycle, p, classes, cycle_list, cycle_structure;
     cycle_list:= [];
+    
+    cycle:= function(n)
+        return ([1..n] mod n) + 1;
+    end;
+
     for p in lambda do
-        Append(cycle_list, (([1..p] mod p) + 1) + Length(cycle_list));
+        Append(cycle_list, cycle(p) + Length(cycle_list));
     od;
+
     cycle_structure:= PermList(cycle_list);
 return cycle_structure;
 end;
@@ -154,10 +155,10 @@ end;
 
 #Tableau corresponding to a word
 TableauWords:= function(row_word, col_word)
-local pair, pairTransposed, lambda, tableau;
+local pair, pairTransposed, lambda, tableau, i;
     pair:= [row_word, col_word];
     pairTransposed:= TransposedMat(pair);
-    lambda:= PartitionWord(w1);
+    lambda:= PartitionWord(row_word);
     tableau:= CanonicalTableau(lambda);
     if Size(Set(pairTransposed)) < Length(pairTransposed) then
         return false;
@@ -198,9 +199,6 @@ local cols, tt, a, uu, row, i, k;
     return TransposedMat(uu);
 end;
 
-#
-MatIntTableaux:= function(lambda)
-
 
 
 ####Section4. Specht object
@@ -208,35 +206,35 @@ MatIntTableaux:= function(lambda)
 
 #Young character of two words u and v
 YoungCharSymm:= function(u, v)
-    local c, d, pi;
-        c:= TransposedMat([u,v]);
-            if Size(Set(c)) < Length(c) then
-                return 0;
-            fi;
-        d:= ShallowCopy(c);
-        pi:= Sortex(d);
-    return SignPerm(pi);
+local c, d, pi;
+    c:= TransposedMat([u,v]);
+        if Size(Set(c)) < Length(c) then
+            return 0;
+        fi;
+    d:= ShallowCopy(c);
+    pi:= Sortex(d);
+return SignPerm(pi);
 end;
 
 
 #Specht matrix corresponding to the arrangements of the row word and column word A and B respectively
 SpechtMatSymm:= function(A, B)
-    local u, v, matrix, row;
+local u, v, matrix, row;
     matrix:= [];
-        for u in A do
-            row:= [];
-                for v in B do
-                    Add(row, YoungCharSymm(u,v));
-                od;
-            Add(matrix, row);
+    for u in A do
+    row:= [];
+        for v in B do
+            Add(row, YoungCharSymm(u,v));
         od;
+        Add(matrix, row);
+    od;
 return matrix;
 end;
 
 
 #Specht object to record all the previous information needed for further concepts
 SpechtSymm:= function(lambda)
-local   syt,  a,  A,  k,  b,  B,  sm;
+local syt,  a,  A,  k,  b,  B,  sm;
 
     syt:= SYTs(lambda);
 
@@ -257,7 +255,7 @@ end;
 
 #Representing matrix corresponding to the permutation sigma of symmetric group
 SpechtRepPerm:= function(specht, perm)
-local   pi, rows, cols, i, stdrows, stdcols, stdrowspermuted, stdcolspermuted, m;
+local pi, rows, cols, i, stdrows, stdcols, stdrowspermuted, stdcolspermuted, m;
 
     pi:= Permutation(perm, specht.A, Permuted);
     #rows:= specht.k;
@@ -278,9 +276,9 @@ end;
 
 #Characters correspnding to a partition lambda for all the class reps
 SymmCharacter:= function(lambda, reps)
-    local   specht;
+local specht;
     specht:= SpechtSymm(lambda);
-    return List(perms, sigma -> Trace(SpechtRepPerm(specht, sigma)));
+    return List(reps, sigma -> Trace(SpechtRepPerm(specht, sigma)));
 end;
 
 
@@ -289,7 +287,7 @@ SymmCharTable:= function(n)
 local P, reps, CharTable;
     P:= Partitions(n);
     reps:= List(P, lambda -> SymmRep(lambda));
-    CharTable:= List(P, lambda -> SymmCharacter(lambda, reps))
+    CharTable:= List(P, lambda -> SymmCharacter(lambda, reps));
 return CharTable;
 end;
 
