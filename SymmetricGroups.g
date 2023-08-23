@@ -71,7 +71,6 @@ end;
 
 
 
-
 #####Section-3. Tableaux and pairs of words
 
 
@@ -278,7 +277,7 @@ end;
 SymmCharacter:= function(lambda, reps)
 local specht;
     specht:= SpechtSymm(lambda);
-    return List(reps, sigma -> Trace(SpechtRepPerm(specht, sigma)));
+return List(reps, sigma -> Trace(SpechtRepPerm(specht, sigma)));
 end;
 
 
