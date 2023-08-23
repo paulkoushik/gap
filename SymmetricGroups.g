@@ -14,7 +14,7 @@ end;
 #Symmetric Group
 SymmGroup:= function(n)
 local G;
-    G:= Group(SymmGens(n));
+    G:= GroupWithGenerators(SymmGens(n));
 return G;
 end;
 
