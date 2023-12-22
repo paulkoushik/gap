@@ -1,4 +1,5 @@
 ####Section-1. The group, generators and class reps
+####Section-1. The group, generators and class reps
 
 
 #Symmetric group generators
@@ -58,6 +59,7 @@ W:= [];
 return W;
 end;
 
+
 #Partition corresponding to a word
 PartitionWord:= function(word)
 local lambda, i;
@@ -72,6 +74,7 @@ end;
 
 
 #####Section-3. Tableaux and pairs of words
+
 
 
 #Standard Young tableaux for a partition lambda
@@ -169,7 +172,6 @@ local pair, pairTransposed, lambda, tableau, i;
 return tableau;
 end;
 
-
 #Transpose of a tableau corresponding to the conjugate partition
 ConjugateTableau:= function(t)
 local i, j, result;
@@ -181,7 +183,6 @@ result:= List(t[1], x -> []);
     od;
 return result;
 end;
-
 
 #Intersection tableau at the intersection of two tableaux t and s
 IntersectionTableau:= function(t,s)
@@ -215,8 +216,7 @@ local c, d, pi;
 return SignPerm(pi);
 end;
 
-
-#Specht matrix corresponding to the arrangements of the row word and column word A and B respectively
+#Specht matrix corresponding to the arrangements of the row words and column word A and B respectively
 SpechtMatSymm:= function(A, B)
 local u, v, matrix, row;
     matrix:= [];
@@ -229,7 +229,6 @@ local u, v, matrix, row;
     od;
 return matrix;
 end;
-
 
 #Specht object to record all the previous information needed for further concepts
 SpechtSymm:= function(lambda)
@@ -247,6 +246,7 @@ local syt,  a,  A,  k,  b,  B,  sm;
 
 return rec(sm:= sm, A:= A, B:= B, syt:= syt, k:= k);
 end;
+
 
 
 ####Section-5. Representing matrices
@@ -280,12 +280,11 @@ local specht;
 return List(reps, sigma -> Trace(SpechtRepPerm(specht, sigma)));
 end;
 
-
 #Character table for all the partitions lambda of n
 SymmCharTable:= function(n)
 local P, reps, CharTable;
     P:= Partitions(n);
-    reps:= List(P, lambda -> SymmRep(lambda));
+    reps:= List(P, SymmRep);
     CharTable:= List(P, lambda -> SymmCharacter(lambda, reps));
 return CharTable;
 end;

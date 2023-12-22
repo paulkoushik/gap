@@ -1,4 +1,4 @@
-#P:= PartitionTuples(n, 3); produces the partition of n as a 3-tuple
+#P:= PartitionTuples(n, r); produces the partition of n as a r-tuple
 
 
 ###############################################
@@ -91,7 +91,7 @@ end;
 ComplexReflectionGroup:= function(r,n)
 local gen;
 gen:= CRTGen(r,n);
-return Group(gen);
+return GroupWithGenerator(gen);
 end;
 
 
