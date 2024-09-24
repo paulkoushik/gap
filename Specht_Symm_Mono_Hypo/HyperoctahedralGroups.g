@@ -20,8 +20,8 @@ return GroupWithGenerators(HypoGens(n));
 end;
 
 
-#Class representatives as a 
-HypoRep:= function(lambda)
+#Class representatives as a generator word
+HypoRepGenWord:= function(lambda)
     local w, o, l, pcycle, ncycle;
 
     pcycle:= function(o,l)
@@ -44,6 +44,18 @@ HypoRep:= function(lambda)
         o:= l+o;
     od;
     return w;
+end;
+
+
+#Class representatives for a set of bipartitions
+HypoReps:= function(all_bipartitions)
+    local n, gens, classes, conj_classes, c;
+    n:= Sum(Sum(all_bipartitions[1]));
+    gens:= HypoGens(n);
+    classes:= List(all_bipartitions, HypoRepGenWord);
+    classes[Position(classes, [])]:= [1,1];
+    conj_classes:= List(classes, c -> Product(gens{c}));
+    return conj_classes;
 end;
 
 
@@ -385,14 +397,34 @@ end;
 ####Section-6. Characters and Character table
 
 
-#Characters correspnding to a bipartition lambda for all the class reps
-HypoCharacter:= function(lambda, gens)
+#Characters correspnding to a bipartition lambda for all of the generators of hypo group
+HypoCharacterWordGens:= function(lambda, gens)
     local n, Bipartitions, specht, classes, list;
     n:= Sum(lambda[1])+Sum(lambda[2]);
     Bipartitions:= BiPartitions(n);
     specht:= SpechtHypo(lambda);
-    classes:= List(Bipartitions, HypoRep);
+    classes:= List(Bipartitions, HypoRepGenWord);
     classes[1]:= [1,1];
     list:= List(gens, sigma -> SpechtRepHypo(specht, sigma));
     return List(classes, c -> TraceMat(Product(list{c})));
 end;
+
+
+#Characters correspnding to a bipartition lambda for all of the class reps (permutations)
+HypoCharacter:= function(lambda, reps)
+    local specht;
+    specht:= SpechtHypo(lambda);
+    return List(reps, sigma -> TraceMat(SpechtRepHypo(specht, sigma)));
+end;
+
+#Character table for all the bipartitions lambda of n
+HypoCharTable:= function(n)
+    local P, reps, CharTable;
+    P:= BiPartitions(n);
+    reps:= HypoReps(P);
+    CharTable:= List(P, lambda -> HypoCharacter(lambda, reps));
+    return CharTable;
+end;
+
+
+
